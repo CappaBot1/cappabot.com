@@ -1,18 +1,18 @@
 import { walk } from "@std/fs";
 
 async function getTheFile(filePath:string):Promise<string> {
-    if (filePath == "/") return "index.html";
+    if (filePath == "/") return "/index.html";
 
     const filePaths = [];
-    for await (const walkEntry of walk("../website")) {
-        if (walkEntry.isFile) filePaths.push(walkEntry.path.replaceAll("\\", "/").replace("../website", ""));
+    for await (const walkEntry of walk("./website")) {
+        if (walkEntry.isFile) filePaths.push(walkEntry.path.replaceAll("\\", "/").replace("website", ""));
     }
 
     if (filePaths.includes(filePath + ".html")) return filePath + ".html";
 
     if (filePaths.includes(filePath)) return filePath;
 
-    return "404.html";
+    return "/404.html";
 }
 
 async function handler(req: Request) {
@@ -35,7 +35,7 @@ async function handler(req: Request) {
     const resFileName = await getTheFile(reqFilePath);
     const resStatus = resFileName == "404.html" ? 400 : 200;
     
-    const file = await Deno.open("../website/" + resFileName);
+    const file = await Deno.open("./website" + resFileName);
     return new Response(file.readable, { status: resStatus });
 }
 
