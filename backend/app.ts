@@ -1,7 +1,4 @@
-import { serveDir } from "@std/http/file-server";
-
-Deno.serve(
-(req) => {
+async function handler(req: Request) {
     const url = new URL(req.url);
     let pathname = url.pathname;
 
@@ -16,8 +13,28 @@ Deno.serve(
         return new Response(`API request to ${pathname}`);
     }
 
-    return serveDir(req, {
-        fsRoot: "../website/",
-    });
+    const filepath = decodeURIComponent(pathname);
+    console.log(filepath);
+
+    try {
+        const htmlNames = [];
+        for await (const name of Deno.readDir("../webiste")) {
+            console.log(name);
+            htmlNames.push(name);
+        }
+        console.log(htmlNames);
+        
+        try {
+            const file = await Deno.open("../website" + filepath, { read: true });
+            return new Response(file.readable);
+        } catch {
+            const file = await Deno.open("../website" + filepath + ".html", { read: true });
+            return new Response(file.readable);
+        }
+    } catch {
+        const file = await Deno.open("../website/404.html", { read: true });
+        return new Response(file.readable, { status: 404 });
+    }
 }
-);
+
+Deno.serve(handler);
