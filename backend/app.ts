@@ -1,5 +1,7 @@
 import { walk } from "@std/fs";
 
+console.info("app.ts running at:", Deno.cwd());
+
 async function getTheFile(filePath:string):Promise<string> {
     if (filePath == "/") return "index.html";
 
