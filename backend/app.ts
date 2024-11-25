@@ -25,7 +25,7 @@ async function handler(req: Request) {
         if (reqPath.startsWith("/status")) {
             reqPath = reqPath.replace("/status", "");
 
-            return new Response("gup (This means that cappabot.com is up and running)");
+            return new Response("gup (This means that cappabot.com has been deployed correctly with deno)");
         }
         return new Response(`API request to ${reqPath}`);
     }
