@@ -1,13 +1,16 @@
 import { walk } from "@std/fs";
 
 console.info("app.ts running at:", Deno.cwd());
+for await (const thing of Deno.readDir("./")) {
+    console.log(thing.name);
+}
 
 async function getTheFile(filePath:string):Promise<string> {
     if (filePath == "/") return "index.html";
 
     const filePaths = [];
-    for await (const walkEntry of walk("../website")) {
-        if (walkEntry.isFile) filePaths.push(walkEntry.path.replaceAll("\\", "/").replace("../website", ""));
+    for await (const walkEntry of walk("./website")) {
+        if (walkEntry.isFile) filePaths.push(walkEntry.path.replaceAll("\\", "/").replace("./website", ""));
     }
 
     if (filePaths.includes(filePath + ".html")) return filePath + ".html";
@@ -37,7 +40,7 @@ async function handler(req: Request) {
     const resFileName = await getTheFile(reqFilePath);
     const resStatus = resFileName == "404.html" ? 400 : 200;
     
-    const file = await Deno.open("../website/" + resFileName);
+    const file = await Deno.open("./website/" + resFileName);
     return new Response(file.readable, { status: resStatus });
 }
 
