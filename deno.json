@@ -1,0 +1,13 @@
+{
+  "tasks": {
+    "dev": "deno run --watch --allow-net --allow-read backend/app.ts"
+  },
+  "fmt": {
+    "indentWidth": 4,
+    "include": ["backend/"]
+  },
+  "imports": {
+    "@std/fs": "jsr:@std/fs@^1.0.6",
+    "@std/path": "jsr:@std/path@^1.0.8"
+  }
+}
