@@ -1,4 +1,5 @@
 import { walk } from "@std/fs";
+import mime from "npm:mime";
 
 async function getTheFile(filePath: string): Promise<string> {
     if (filePath == "/") return "/index.html";
@@ -48,7 +49,8 @@ async function websiteRequest(req: Request): Promise<Response> {
     const resStatus = resFileName == "404.html" ? 404 : 200;
 
     const file = await Deno.open("./website" + resFileName);
-    const headers = resFileName.endsWith(".html") ? new Headers({"content-type": "text/html"}) : undefined
+    const contentType = mime.getType(resFileName);
+    const headers = new Headers({ "content-type": contentType || "text/plain" });
     return new Response(file.readable, { status: resStatus, headers: headers });
 }
 
