@@ -48,7 +48,8 @@ async function websiteRequest(req: Request): Promise<Response> {
     const resStatus = resFileName == "404.html" ? 404 : 200;
 
     const file = await Deno.open("./website" + resFileName);
-    return new Response(file.readable, { status: resStatus, headers: new Headers({"content-type": "text/html"}) });
+    const headers = resFileName.endsWith(".html") ? new Headers({"content-type": "text/html"}) : undefined
+    return new Response(file.readable, { status: resStatus, headers: headers });
 }
 
 async function handler(req: Request) {
