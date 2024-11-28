@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Title the webiste tab -->
+        <title>CappaBot</title>
+        <!-- Use the pico stylesheet because it looks cool -->
+        <link rel="stylesheet" href="/styles/pico.min.css" type="text/css">
+    </head>
+    <body>
+        <!-- Main pico container -->
+        <main class="container">
+            <hgroup>
+                <h1><a href="/">CappaBot</a></h1>
+                <p>Welcome to the CappaBot website!</p>
+            </hgroup>
+
+            <h2>A little bit of matter.js testing...</h2>
+
+            <p>
+                Press the buttons to start tests<br>
+                (Reload the page to restart)<br>
+                <button onclick="mixedShapes()">Mixed Shapes</button>
+            </p>
+            
+
+            <div id="matterjs"></div>
+            <script src="/scripts/matter.js"></script>
+            <script src="/scripts/matter-test.js"></script>
+
+            <footer>
+                Made by CappaBot<br>
+                <a href="/terms-of-service">Terms of service</a> | <a href="/privacy-policy">Privacy policy</a>
+            </footer>
+        </main>
+        <script src="/scripts/main.js" type="text/javascript"></script>
+    </body>
+</html>
