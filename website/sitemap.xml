@@ -1,0 +1,19 @@
+<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://cappabot.com/</loc>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>https://cappabot.com/privacy-policy</loc>
+    </url>
+    <url>
+        <loc>https://cappabot.com/terms-of-service</loc>
+    </url>
+    <url>
+        <loc>https://cappabot.com/404.html</loc>
+        <priority>0.0</priority>
+    </url>
+    <url>
+        <loc>https://cappabot.com/matterjs</loc>
+    </url>
+</urlset>
