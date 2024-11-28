@@ -1,0 +1,3 @@
+# Robots.txt file made by CappaBot (I don't know what to do here)
+User-agent: *
+Disallow: /secret/
