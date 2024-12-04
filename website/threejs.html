@@ -7,7 +7,17 @@
         <!-- Use the pico stylesheet because it looks cool -->
         <link rel="stylesheet" href="/styles/pico.min.css" type="text/css">
         <meta name="viewport" content="width=device-width">
-        <meta name="description" content="Matter.js testing page made by CappaBot.">
+        <meta name="description" content="Three.js testing page made by CappaBot.">
+
+        <!-- Import three.js -->
+        <script type="importmap">
+            {
+                "imports": {
+                    "three": "https://cdn.jsdelivr.net/npm/three@0.107.0/build/three.module.js",
+                    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.107.0/examples/jsm/"
+                }
+            }
+        </script>
     </head>
     <body>
         <!-- Main pico container -->
@@ -17,21 +27,13 @@
                 <p>Welcome to the CappaBot website!</p>
             </hgroup>
 
-            <h2><a href="https://brm.io/matter-js/" target="_blank">Matter.js</a> testing page</h2>
+            <h2><a href="https://threejs.org" target="_blank">Three.js</a> testing page</h2>
 
-            <p>
-                Press the buttons to start tests<br>
-                (Reload the page to restart)<br>
-                <button onclick="mixedShapes()">Mixed Shapes</button>
-                <button onclick="cubeStack()">Cube Stack</button>
-                <button onclick="soft()">Soft Body</button>
-                <button onclick="cradle()">Newton's cradle</button>
-            </p>
+            <p>Something (i forgor)</p>
 
-            <div id="matterjs"></div>
+            <div id="threejs"></div>
             <p id="loading-message">Loading...</p>
-            <script defer src="/scripts/matter.min.js"></script>
-            <script defer src="/scripts/matter-test.js"></script>
+            <script defer src="/scripts/three-test.js" type="module"></script>
             <script defer src="/scripts/loading-done.js"></script>
 
             <footer>
