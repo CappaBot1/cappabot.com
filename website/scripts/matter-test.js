@@ -6,7 +6,32 @@ var Engine = Matter.Engine,
     MouseConstraint = Matter.MouseConstraint,
     Mouse = Matter.Mouse,
     Composite = Matter.Composite,
-    Bodies = Matter.Bodies;
+    Bodies = Matter.Bodies,
+    Body = Matter.Body;
+
+var matterjsElement = document.getElementById("matterjs");
+
+function test() {
+    var engine = Engine.create(),
+        world = engine.world;
+    
+    var render = Render.create({
+        element: matterjsElement,
+        engine: engine,
+        options: {
+            width: 800,
+            height: 600,
+            wireframes: false
+        }
+    });
+
+    Render.run(render);
+
+    var runner = Runner.create();
+    Runner.run(runner, engine);
+
+    
+}
 
 function mixedShapes() {
     // create engine
@@ -15,7 +40,7 @@ function mixedShapes() {
     
     // create renderer
     var render = Render.create({
-        element: document.getElementById("matterjs"),
+        element: matterjsElement,
         engine: engine,
         options: {
             width: 800,
@@ -95,7 +120,7 @@ function cubeStack() {
 
     // create renderer
     var render = Render.create({
-        element: document.getElementById("matterjs"),
+        element: matterjsElement,
         engine: engine,
         options: {
             width: 800,
@@ -146,25 +171,6 @@ function cubeStack() {
     });
 }
 
-function softSomething(xx, yy, columns, rows, columnGap, rowGap, crossBrace, particleRadius, particleOptions, constraintOptions) {
-    var Common = Matter.Common,
-        Composites = Matter.Composites,
-        Bodies = Matter.Bodies;
-
-    particleOptions = Common.extend({ inertia: Infinity }, particleOptions);
-    constraintOptions = Common.extend({ stiffness: 0.2, render: { type: 'line', anchors: false } }, constraintOptions);
-
-    var softBody = Composites.stack(xx, yy, columns, rows, columnGap, rowGap, function(x, y) {
-        return Bodies.circle(x, y, particleRadius, particleOptions);
-    });
-
-    Composites.mesh(softBody, columns, rows, crossBrace, constraintOptions);
-
-    softBody.label = 'Soft Body';
-
-    return softBody;
-}
-
 function soft() {
     // create engine
     var engine = Engine.create(),
@@ -172,7 +178,7 @@ function soft() {
 
     // create renderer
     var render = Render.create({
-        element: document.getElementById("matterjs"),
+        element: matterjsElement,
         engine: engine,
         options: {
             width: 800,
@@ -193,6 +199,25 @@ function soft() {
         frictionStatic: 0.1,
         render: { visible: true } 
     };
+
+    const softSomething = function (xx, yy, columns, rows, columnGap, rowGap, crossBrace, particleRadius, particleOptions, constraintOptions) {
+        var Common = Matter.Common,
+            Composites = Matter.Composites,
+            Bodies = Matter.Bodies;
+    
+        particleOptions = Common.extend({ inertia: Infinity }, particleOptions);
+        constraintOptions = Common.extend({ stiffness: 0.2, render: { type: 'line', anchors: false } }, constraintOptions);
+    
+        var softBody = Composites.stack(xx, yy, columns, rows, columnGap, rowGap, function(x, y) {
+            return Bodies.circle(x, y, particleRadius, particleOptions);
+        });
+    
+        Composites.mesh(softBody, columns, rows, crossBrace, constraintOptions);
+    
+        softBody.label = 'Soft Body';
+    
+        return softBody;
+    }
 
     Composite.add(world, [
         // see softBody function defined later in this file
@@ -226,6 +251,77 @@ function soft() {
     // fit the render viewport to the scene
     Render.lookAt(render, {
         min: { x: 0, y: 0 },
+        max: { x: 800, y: 600 }
+    });
+}
+
+function cradle() {
+    // create engine
+    var engine = Engine.create(),
+        world = engine.world;
+
+    // create renderer
+    var render = Render.create({
+        element: matterjsElement,
+        engine: engine,
+        options: {
+            width: 800,
+            height: 600
+        }
+    });
+
+    Render.run(render);
+
+    // create runner
+    var runner = Runner.create();
+    Runner.run(runner, engine);
+
+    const cradleSomething = function(xx, yy, number, size, length) {
+        var Composite = Matter.Composite,
+            Constraint = Matter.Constraint,
+            Bodies = Matter.Bodies,
+            separation;
+    
+        var newtonsCradle = Composite.create({ label: 'Newtons Cradle' });
+    
+        for (var i = 0; i < number; i++) {
+            separation = 1.9,
+                circle = Bodies.circle(xx + i * (size * separation), yy + length, size, 
+                    { inertia: Infinity, restitution: 1, friction: 0, frictionAir: 0, slop: size * 0.02 }),
+                constraint = Constraint.create({ pointA: { x: xx + i * (size * separation), y: yy }, bodyB: circle });
+    
+            Composite.addBody(newtonsCradle, circle);
+            Composite.addConstraint(newtonsCradle, constraint);
+        }
+    
+        return newtonsCradle;
+    };
+
+    // see newtonsCradle function defined later in this file
+    var cradle = cradleSomething(280, 300, 5, 30, 200);
+    Composite.add(world, cradle);
+    //Body.translate(cradle.bodies[0], { x: -180, y: -100 });
+
+    // add mouse control
+    var mouse = Mouse.create(render.canvas),
+        mouseConstraint = MouseConstraint.create(engine, {
+            mouse: mouse,
+            constraint: {
+                stiffness: 0.2,
+                render: {
+                    visible: false
+                }
+            }
+        });
+
+    Composite.add(world, mouseConstraint);
+
+    // keep the mouse in sync with rendering
+    render.mouse = mouse;
+
+    // fit the render viewport to the scene
+    Render.lookAt(render, {
+        min: { x: 0, y: 50 },
         max: { x: 800, y: 600 }
     });
 }
