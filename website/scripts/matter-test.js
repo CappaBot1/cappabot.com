@@ -9,7 +9,7 @@ var Engine = Matter.Engine,
     Bodies = Matter.Bodies,
     Body = Matter.Body;
 
-var matterjsElement = document.getElementById("matterjs");
+const matterjsElement = document.getElementById("matterjs");
 
 function test() {
     var engine = Engine.create(),
