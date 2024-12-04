@@ -24,9 +24,12 @@ function cylinder() {
 	const cylinder = new THREE.Mesh(geometry, material);
 	scene.add(cylinder);
 
-	const light = new THREE.DirectionalLight('white', 2);
+	const light = new THREE.DirectionalLight(0xffffff, 2);
 	light.position.set(20, 10, 10);
 	scene.add(light);
+
+	const ambientLight = new THREE.AmbientLight( 0xff0000, 0.1 );
+	scene.add( ambientLight );
 
 	animate();
 	function animate() {
