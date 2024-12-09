@@ -4,14 +4,12 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 window.cylinder = cylinder
 window.someShapes = someShapes
 
-const threejsElement = document.getElementById("threejs");
-
 function cylinder() {
 	const renderer = new THREE.WebGLRenderer();
-	renderer.setSize(800, 600);
-	threejsElement.append(renderer.domElement);
+	renderer.setSize(width, height);
+	testContainer.append(renderer.domElement);
 
-	const camera = new THREE.PerspectiveCamera(35, 800 / 600, 0.1, 100);
+	const camera = new THREE.PerspectiveCamera(35, ratio, 0.1, 100);
 	const controls = new OrbitControls(camera, renderer.domElement);
 	camera.position.set( 0, 0, 10 );
 	controls.update();
@@ -46,7 +44,7 @@ function someShapes() {
 
 	function init() {
 
-		camera = new THREE.PerspectiveCamera( 45, 800 / 600, 1, 2000 );
+		camera = new THREE.PerspectiveCamera( 45, ratio, 1, 2000 );
 		camera.position.y = 400;
 
 		scene = new THREE.Scene();
@@ -127,9 +125,9 @@ function someShapes() {
 		//
 
 		renderer = new THREE.WebGLRenderer( { antialias: true } );
-		renderer.setSize( 800, 600 );
+		renderer.setSize( width, height );
 		renderer.setAnimationLoop( render );
-		threejsElement.appendChild( renderer.domElement );
+		testContainer.appendChild( renderer.domElement );
 	}
 
 	function render() {
