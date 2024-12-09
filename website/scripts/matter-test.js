@@ -9,18 +9,16 @@ var Engine = Matter.Engine,
     Bodies = Matter.Bodies,
     Body = Matter.Body;
 
-const matterjsElement = document.getElementById("matterjs");
-
 function test() {
     var engine = Engine.create(),
         world = engine.world;
     
     var render = Render.create({
-        element: matterjsElement,
+        element: testContainer,
         engine: engine,
         options: {
-            width: 800,
-            height: 600,
+            width: width,
+            height: height,
             wireframes: false
         }
     });
@@ -40,11 +38,11 @@ function mixedShapes() {
     
     // create renderer
     var render = Render.create({
-        element: matterjsElement,
+        element: testContainer,
         engine: engine,
         options: {
-            width: 800,
-            height: 600,
+            width: width,
+            height: height,
             showAngleIndicator: true,
         }
     });
@@ -82,11 +80,10 @@ function mixedShapes() {
     Composite.add(world, stack);
     
     Composite.add(world, [
-        // walls
-        Bodies.rectangle(400, 0, 800, 50, { isStatic: true }),
-        Bodies.rectangle(400, 600, 800, 50, { isStatic: true }),
-        Bodies.rectangle(800, 300, 50, 600, { isStatic: true }),
-        Bodies.rectangle(0, 300, 50, 600, { isStatic: true })
+        Bodies.rectangle(width/2, 0, width, 50, { isStatic: true }), // top
+        Bodies.rectangle(width, height/2, 50, height, { isStatic: true }), // right
+        Bodies.rectangle(width/2, height, width, 50, { isStatic: true }), // bottom
+        Bodies.rectangle(0, height/2, 50, height, { isStatic: true }) // left
     ]);
     
     // add mouse control
@@ -109,7 +106,7 @@ function mixedShapes() {
     // fit the render viewport to the scene
     Render.lookAt(render, {
         min: { x: 0, y: 0 },
-        max: { x: 800, y: 600 }
+        max: { x: width, y: height }
     });
 }
 
@@ -120,11 +117,11 @@ function cubeStack() {
 
     // create renderer
     var render = Render.create({
-        element: matterjsElement,
+        element: testContainer,
         engine: engine,
         options: {
-            width: 800,
-            height: 600
+            width: width,
+            height: height
         }
     });
 
@@ -135,16 +132,16 @@ function cubeStack() {
     Runner.run(runner, engine);
 
     // scene code
-    var stack = Composites.stack(100, 600 - 25 - 18 * 25, 25, 18, 0, 0, function(x, y) {
+    var stack = Composites.stack(100, height - 25 - 18 * 25, 25, 18, 0, 0, function(x, y) {
         return Bodies.rectangle(x, y, 25, 25);
     });
     
     Composite.add(world, [
         stack,
-        Bodies.rectangle(400, 0, 800, 50, { isStatic: true }),
-        Bodies.rectangle(400, 600, 800, 50, { isStatic: true }),
-        Bodies.rectangle(800, 300, 50, 600, { isStatic: true }),
-        Bodies.rectangle(0, 300, 50, 600, { isStatic: true })
+        Bodies.rectangle(width/2, 0, width, 50, { isStatic: true }), // top
+        Bodies.rectangle(width, height/2, 50, height, { isStatic: true }), // right
+        Bodies.rectangle(width/2, height, width, 50, { isStatic: true }), // bottom
+        Bodies.rectangle(0, height/2, 50, height, { isStatic: true }) // left
     ]);
 
     // add mouse control
@@ -167,7 +164,7 @@ function cubeStack() {
     // fit the render viewport to the scene
     Render.lookAt(render, {
         min: { x: 0, y: 0 },
-        max: { x: 800, y: 600 }
+        max: { x: width, y: height }
     });
 }
 
@@ -178,11 +175,11 @@ function soft() {
 
     // create renderer
     var render = Render.create({
-        element: matterjsElement,
+        element: testContainer,
         engine: engine,
         options: {
-            width: 800,
-            height: 600,
+            width: width,
+            height: height,
             showAngleIndicator: false
         }
     });
@@ -220,15 +217,14 @@ function soft() {
     }
 
     Composite.add(world, [
-        // see softBody function defined later in this file
         softSomething(250, 100, 5, 5, 0, 0, true, 18, particleOptions),
         softSomething(400, 300, 8, 3, 0, 0, true, 15, particleOptions),
         softSomething(250, 400, 4, 4, 0, 0, true, 15, particleOptions),
         // walls
-        Bodies.rectangle(400, 0, 800, 50, { isStatic: true }),
-        Bodies.rectangle(400, 600, 800, 50, { isStatic: true }),
-        Bodies.rectangle(800, 300, 50, 600, { isStatic: true }),
-        Bodies.rectangle(0, 300, 50, 600, { isStatic: true })
+        Bodies.rectangle(width/2, 0, width, 50, { isStatic: true }), // top
+        Bodies.rectangle(width, height/2, 50, height, { isStatic: true }), // right
+        Bodies.rectangle(width/2, height, width, 50, { isStatic: true }), // bottom
+        Bodies.rectangle(0, height/2, 50, height, { isStatic: true }) // left
     ]);
 
     // add mouse control
@@ -251,7 +247,7 @@ function soft() {
     // fit the render viewport to the scene
     Render.lookAt(render, {
         min: { x: 0, y: 0 },
-        max: { x: 800, y: 600 }
+        max: { x: width, y: height }
     });
 }
 
@@ -262,11 +258,11 @@ function cradle() {
 
     // create renderer
     var render = Render.create({
-        element: matterjsElement,
+        element: testContainer,
         engine: engine,
         options: {
-            width: 800,
-            height: 600
+            width: width,
+            height: height
         }
     });
 
@@ -322,6 +318,6 @@ function cradle() {
     // fit the render viewport to the scene
     Render.lookAt(render, {
         min: { x: 0, y: 50 },
-        max: { x: 800, y: 600 }
+        max: { x: width, y: height }
     });
 }

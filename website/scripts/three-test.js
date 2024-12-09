@@ -4,14 +4,12 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 window.cylinder = cylinder
 window.someShapes = someShapes
 
-const threejsElement = document.getElementById("threejs");
-
 function cylinder() {
 	const renderer = new THREE.WebGLRenderer();
-	renderer.setSize(800, 600);
-	threejsElement.append(renderer.domElement);
+	renderer.setSize(width, height);
+	testContainer.append(renderer.domElement);
 
-	const camera = new THREE.PerspectiveCamera(35, 800 / 600, 0.1, 100);
+	const camera = new THREE.PerspectiveCamera(35, ratio, 0.1, 100);
 	const controls = new OrbitControls(camera, renderer.domElement);
 	camera.position.set( 0, 0, 10 );
 	controls.update();
@@ -24,9 +22,12 @@ function cylinder() {
 	const cylinder = new THREE.Mesh(geometry, material);
 	scene.add(cylinder);
 
-	const light = new THREE.DirectionalLight('white', 2);
+	const light = new THREE.DirectionalLight(0xffffff, 2);
 	light.position.set(20, 10, 10);
 	scene.add(light);
+
+	const ambientLight = new THREE.AmbientLight( 0xff0000, 0.1 );
+	scene.add( ambientLight );
 
 	animate();
 	function animate() {
@@ -43,7 +44,7 @@ function someShapes() {
 
 	function init() {
 
-		camera = new THREE.PerspectiveCamera( 45, 800 / 600, 1, 2000 );
+		camera = new THREE.PerspectiveCamera( 45, ratio, 1, 2000 );
 		camera.position.y = 400;
 
 		scene = new THREE.Scene();
@@ -124,9 +125,9 @@ function someShapes() {
 		//
 
 		renderer = new THREE.WebGLRenderer( { antialias: true } );
-		renderer.setSize( 800, 600 );
+		renderer.setSize( width, height );
 		renderer.setAnimationLoop( render );
-		threejsElement.appendChild( renderer.domElement );
+		testContainer.appendChild( renderer.domElement );
 	}
 
 	function render() {

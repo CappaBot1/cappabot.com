@@ -7,17 +7,7 @@
         <!-- Use the pico stylesheet because it looks cool -->
         <link rel="stylesheet" href="/styles/pico.min.css" type="text/css">
         <meta name="viewport" content="width=device-width">
-        <meta name="description" content="Three.js testing page made by CappaBot.">
-
-        <!-- Import three.js -->
-        <script type="importmap">
-            {
-                "imports": {
-                    "three": "https://cdn.jsdelivr.net/npm/three@0.107.0/build/three.module.js",
-                    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.107.0/examples/jsm/"
-                }
-            }
-        </script>
+        <meta name="description" content="Matter.js testing page made by CappaBot.">
     </head>
     <body>
         <!-- Main pico container -->
@@ -27,18 +17,19 @@
                 <p>Welcome to the CappaBot website!</p>
             </hgroup>
 
-            <h2><a href="https://threejs.org" target="_blank">Three.js</a> testing page</h2>
+            <h2><a href="https://p5js.org/" target="_blank">p5.js</a> testing page</h2>
 
             <p>
-                Press the buttons to load scenes<br>
+                Press the buttons to do things<br>
                 (Reload the page to restart)<br>
-                <button onclick="cylinder()">Cylinder</button>
-                <button onclick="someShapes()">Some Shapes</button>
+                <button onclick="new p5(bouncingBall)">Bouncing circle</button>
+                <button onclick="new p5(bouncingBalls)">Bouncing circles</button>
             </p>
 
             <div id="test-container"></div>
             <p id="loading-message">Loading...</p>
-            <script defer src="/scripts/three-test.js" type="module"></script>
+            <script defer src="https://cdn.jsdelivr.net/npm/p5@1.11.2/lib/p5.min.js"></script>
+            <script defer src="/scripts/p5-test.js"></script>
             <script defer src="/scripts/loading-done.js"></script>
 
             <footer>

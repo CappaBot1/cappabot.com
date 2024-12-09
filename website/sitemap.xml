@@ -16,4 +16,10 @@
     <url>
         <loc>https://cappabot.com/matterjs</loc>
     </url>
+    <url>
+        <loc>https://cappabot.com/threejs</loc>
+    </url>
+    <url>
+        <loc>https://cappabot.com/p5js</loc>
+    </url>
 </urlset>
