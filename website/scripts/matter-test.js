@@ -9,6 +9,8 @@ var Engine = Matter.Engine,
     Bodies = Matter.Bodies,
     Body = Matter.Body;
 
+// TODO: make all of the things spawn in the centre and at the correct size
+
 function test() {
     var engine = Engine.create(),
         world = engine.world;
