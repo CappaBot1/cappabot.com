@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
+// Export the functions to the window scope so they can be used on the page
 window.cylinder = cylinder
 window.someShapes = someShapes
 

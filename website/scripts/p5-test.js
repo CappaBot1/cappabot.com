@@ -29,6 +29,28 @@ class Ball {
     }
 }
 
+function bouncingBall(p) {
+    let canvasElement = document.createElement("canvas");
+    testContainer.append(canvasElement);
+
+    let ball;
+
+    p.setup = () => {
+        p.createCanvas(width, height, canvasElement);
+        ball = new Ball(p, 100, height - 50, 3, -3, 50, 0.2);
+        p.strokeWeight(5);
+    };
+
+    p.draw = () => {
+        p.translate(0, height);
+        p.scale(1, -1);
+        p.background(100);
+
+        ball.update();
+        ball.show();
+    };
+}
+
 function bouncingBalls(p) {
     let canvasElement = document.createElement("canvas");
     testContainer.append(canvasElement);
@@ -55,25 +77,3 @@ function bouncingBalls(p) {
         });
     };
 };
-
-function bouncingBall(p) {
-    let canvasElement = document.createElement("canvas");
-    testContainer.append(canvasElement);
-
-    let ball;
-
-    p.setup = () => {
-        p.createCanvas(width, height, canvasElement);
-        ball = new Ball(p, 100, height - 50, 3, -3, 50, 0.2);
-        p.strokeWeight(5);
-    };
-
-    p.draw = () => {
-        p.translate(0, height);
-        p.scale(1, -1);
-        p.background(100);
-
-        ball.update();
-        ball.show();
-    };
-}
