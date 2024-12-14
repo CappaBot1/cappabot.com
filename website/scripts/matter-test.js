@@ -4,12 +4,11 @@ var Engine = Matter.Engine,
     Composites = Matter.Composites,
     Common = Matter.Common,
     MouseConstraint = Matter.MouseConstraint,
+    Constraint = Matter.Constraint,
     Mouse = Matter.Mouse,
     Composite = Matter.Composite,
     Bodies = Matter.Bodies,
     Body = Matter.Body;
-
-// TODO: make all of the things spawn in the centre and at the correct size
 
 function test() {
     var engine = Engine.create(),
@@ -29,8 +28,6 @@ function test() {
 
     var runner = Runner.create();
     Runner.run(runner, engine);
-
-    
 }
 
 function mixedShapes() {
@@ -56,7 +53,7 @@ function mixedShapes() {
     Runner.run(runner, engine);
     
     // add bodies
-    var stack = Composites.stack(20, 20, 10, 5, 0, 0, function(x, y) {
+    var stack = Composites.stack(width/4, 20, 10, 5, 0, 0, function(x, y) {
         var sides = Math.round(Common.random(1, 8));
     
         // round the edges of some bodies
@@ -70,12 +67,12 @@ function mixedShapes() {
         switch (Math.round(Common.random(0, 1))) {
         case 0:
             if (Common.random() < 0.8) {
-                return Bodies.rectangle(x, y, Common.random(25, 50), Common.random(25, 50), { chamfer: chamfer });
+                return Bodies.rectangle(x, y, Common.random(width/24, width/16), Common.random(height/24, height/16), { chamfer: chamfer });
             } else {
-                return Bodies.rectangle(x, y, Common.random(80, 120), Common.random(25, 30), { chamfer: chamfer });
+                return Bodies.rectangle(x, y, Common.random(width/10, width/8), Common.random(height/24, height/20), { chamfer: chamfer });
             }
         case 1:
-            return Bodies.polygon(x, y, sides, Common.random(25, 50), { chamfer: chamfer });
+            return Bodies.polygon(x, y, sides, Common.random(width/24, width/16), { chamfer: chamfer });
         }
     });
     
@@ -134,8 +131,8 @@ function cubeStack() {
     Runner.run(runner, engine);
 
     // scene code
-    var stack = Composites.stack(100, height - 25 - 18 * 25, 25, 18, 0, 0, function(x, y) {
-        return Bodies.rectangle(x, y, 25, 25);
+    var stack = Composites.stack(width/4, height - 25 - (20*width/2/25), 25, 20, 0, 0, function(x, y) {
+        return Bodies.rectangle(x, y, width/2/25, width/2/25);
     });
     
     Composite.add(world, [
@@ -219,9 +216,9 @@ function soft() {
     }
 
     Composite.add(world, [
-        softSomething(250, 100, 5, 5, 0, 0, true, 18, particleOptions),
-        softSomething(400, 300, 8, 3, 0, 0, true, 15, particleOptions),
-        softSomething(250, 400, 4, 4, 0, 0, true, 15, particleOptions),
+        softSomething(width/4, height/6, 5, 5, 0, 0, true, width/50, particleOptions),
+        softSomething(width/2, height/4, 9, 3, 0, 0, true, width/64, particleOptions),
+        softSomething(width/1.5, height/2, 4, 4, 0, 0, true, width/64, particleOptions),
         // walls
         Bodies.rectangle(width/2, 0, width, 50, { isStatic: true }), // top
         Bodies.rectangle(width, height/2, 50, height, { isStatic: true }), // right
@@ -281,12 +278,13 @@ function cradle() {
             separation;
     
         var newtonsCradle = Composite.create({ label: 'Newtons Cradle' });
-    
-        for (var i = 0; i < number; i++) {
-            separation = 1.9,
-                circle = Bodies.circle(xx + i * (size * separation), yy + length, size, 
-                    { inertia: Infinity, restitution: 1, friction: 0, frictionAir: 0, slop: size * 0.02 }),
-                constraint = Constraint.create({ pointA: { x: xx + i * (size * separation), y: yy }, bodyB: circle });
+
+        separation = 0.95
+        for (var i = 0.5; i < number + 0.5; i++) {
+            circle = Bodies.circle(xx + ((i - number/2) * size), yy + length, size/2, 
+                { inertia: Infinity, restitution: 1, friction: 0, frictionAir: 0, slop: size * 0.02 });
+
+            constraint = Constraint.create({ pointA: { x: xx + ((i - number/2) * size * separation), y: yy }, bodyB: circle });
     
             Composite.addBody(newtonsCradle, circle);
             Composite.addConstraint(newtonsCradle, constraint);
@@ -296,7 +294,7 @@ function cradle() {
     };
 
     // see newtonsCradle function defined later in this file
-    var cradle = cradleSomething(280, 300, 5, 30, 200);
+    var cradle = cradleSomething(width/2, height/3, 5, width/3/5, height/3);
     Composite.add(world, cradle);
     //Body.translate(cradle.bodies[0], { x: -180, y: -100 });
 
@@ -322,4 +320,48 @@ function cradle() {
         min: { x: 0, y: 50 },
         max: { x: width, y: height }
     });
+}
+
+function doublePendulum() {
+    var engine = Engine.create(),
+        world = engine.world;
+    
+    var render = Render.create({
+        element: testContainer,
+        engine: engine,
+        options: {
+            width: width,
+            height: height,
+            wireframes: true
+        }
+    });
+
+    Render.run(render);
+
+    var runner = Runner.create();
+    Runner.run(runner, engine);
+
+    let minLen = Math.min(width, height)/4;
+
+    var
+    circle1 = Bodies.circle(width/2, height/2 - minLen, minLen/5, { frictionAir: 0, friction: 0, frictionStatic: 0, intertia: Infinity}),
+    circle2 = Bodies.circle(width/2 + minLen, height/2 - minLen, minLen/5, { frictionAir: 0, friction: 0, frictionStatic: 0, intertia: Infinity}),
+
+    arm1 = Constraint.create({ pointA: {x: width/2, y: height/2}, bodyB: circle1}),
+    arm2 = Constraint.create({ bodyA: circle1, bodyB: circle2});
+
+    Composite.add(world, [circle1, circle2, arm1, arm2]);
+
+    var mouse = Mouse.create(render.canvas),
+        mouseConstraint = MouseConstraint.create(engine, {
+            mouse: mouse,
+            constraint: {
+                stiffness: 0.2,
+                render: {
+                    visible: false
+                }
+            }
+        });
+
+    Composite.add(world, mouseConstraint);
 }

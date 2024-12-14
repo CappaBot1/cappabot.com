@@ -52,7 +52,9 @@ function apiRequest(req: Request): Response {
         } else return new Response('Only "GET" to /api/status pls');
     }
     // Pretty much a 404 for api requests
-    return new Response(`API request to ${reqPath} could not be resolved`, { status: 404 });
+    return new Response(`API request to ${reqPath} could not be resolved`, {
+        status: 404,
+    });
 }
 
 // Handle requests to the website part of cappabot.com
@@ -72,12 +74,14 @@ async function websiteRequest(req: Request): Promise<Response> {
     // Get the mime type from the file name
     const contentType = mime.getType(resFileName);
     // If a mime type was found, set the content-type header to that, otherwise the type is text/plain
-    const headers = new Headers({ "content-type": contentType || "text/plain" });
+    const headers = new Headers({
+        "content-type": contentType || "text/plain",
+    });
     // Return the response with the status and the headers
     return new Response(file.readable, { status: resStatus, headers: headers });
 }
 
-// Handle all requests to cappabot.com 
+// Handle all requests to cappabot.com
 async function handler(req: Request) {
     const reqMethod = req.method;
     const reqURL = new URL(req.url);
