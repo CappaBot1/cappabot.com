@@ -4,6 +4,7 @@ var Engine = Matter.Engine,
     Composites = Matter.Composites,
     Common = Matter.Common,
     MouseConstraint = Matter.MouseConstraint,
+    Constraint = Matter.Constraint,
     Mouse = Matter.Mouse,
     Composite = Matter.Composite,
     Bodies = Matter.Bodies,
@@ -319,4 +320,48 @@ function cradle() {
         min: { x: 0, y: 50 },
         max: { x: width, y: height }
     });
+}
+
+function doublePendulum() {
+    var engine = Engine.create(),
+        world = engine.world;
+    
+    var render = Render.create({
+        element: testContainer,
+        engine: engine,
+        options: {
+            width: width,
+            height: height,
+            wireframes: true
+        }
+    });
+
+    Render.run(render);
+
+    var runner = Runner.create();
+    Runner.run(runner, engine);
+
+    let minLen = Math.min(width, height)/4;
+
+    var
+    circle1 = Bodies.circle(width/2, height/2 - minLen, minLen/5, { frictionAir: 0, friction: 0, frictionStatic: 0, intertia: Infinity}),
+    circle2 = Bodies.circle(width/2 + minLen, height/2 - minLen, minLen/5, { frictionAir: 0, friction: 0, frictionStatic: 0, intertia: Infinity}),
+
+    arm1 = Constraint.create({ pointA: {x: width/2, y: height/2}, bodyB: circle1}),
+    arm2 = Constraint.create({ bodyA: circle1, bodyB: circle2});
+
+    Composite.add(world, [circle1, circle2, arm1, arm2]);
+
+    var mouse = Mouse.create(render.canvas),
+        mouseConstraint = MouseConstraint.create(engine, {
+            mouse: mouse,
+            constraint: {
+                stiffness: 0.2,
+                render: {
+                    visible: false
+                }
+            }
+        });
+
+    Composite.add(world, mouseConstraint);
 }
