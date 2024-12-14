@@ -37,7 +37,7 @@ function bouncingBall(p) {
 
     p.setup = () => {
         p.createCanvas(width, height, canvasElement);
-        ball = new Ball(p, 100, height - 50, 3, -3, 50, 0.2);
+        ball = new Ball(p, width/20, height*0.8, width/100, width/-100, width/20, width/1500);
         p.strokeWeight(5);
     };
 
@@ -60,7 +60,7 @@ function bouncingBalls(p) {
     p.setup = () => {
         p.createCanvas(width, height, canvasElement);
         for (let i = 0; i < 5; i ++) {
-            balls.push(new Ball(p, 100, height - 50, i + 2, -3, 50, 0.2));
+            balls.push(new Ball(p, width/20, height*0.8, width/(i+100), width/-100, width/20, width/1500));
         }
 
         p.strokeWeight(5);
